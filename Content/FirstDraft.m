@@ -1,14 +1,15 @@
 % Check for difference
-% Step 1: Setup - List of PDFs
+%% Step 1: Setup - List of PDFs
 pdfFiles = {'article 1.pdf', 'article 2.pdf', 'article 3.pdf', ...
          'article 4.pdf', 'article 5.pdf', 'article 6.pdf', ...
          'article 7.pdf', 'article 8.pdf', 'article 9.pdf', ...
          'article 10.pdf'};
 
-% Initialize results storage with NaN to track unprocessed articles
+% Initialize results storage with NaN to track unprocessed articles (used 0
+% to describe neutrality so decided to use Not a Number instead) 
 articleTones = NaN(1, length(pdfFiles)); 
 
-% Define Positive & Negative Word Lists
+% Define positive & negative word lists
 positiveWords = ["multitasking", "healthy", "support", "connection", "community", ...
               "happiness", "belonging", "relationships", "rewarding", "satisfaction"];
 negativeWords = ["stigma", "addiction", "risk", "isolation", "disorders", "cyberbullying", ...
@@ -16,14 +17,14 @@ negativeWords = ["stigma", "addiction", "risk", "isolation", "disorders", "cyber
               "depression", "stress", "anxiety"];
 
 % Define classification categories
-categories = {'Negative', 'Neutral', 'Positive'};  % Fix for undefined 'categories'
+categories = {'Negative', 'Neutral', 'Positive'};  
 
 % Set the correct path to your MATLAB Drive
 currentFilePath = mfilename('fullpath');
 currentDirPath = string(fileparts(currentFilePath));
 pdfFolder = fullfile(currentDirPath, "Articles");
 
-% Step 2: Extract Text & Analyze Tone
+%% Step 2: Extract Text & Analyze Tone
 for i = 1:length(pdfFiles)
     % Construct the full file path
     filePath = fullfile(pdfFolder, pdfFiles{i});
@@ -43,12 +44,12 @@ for i = 1:length(pdfFiles)
     % Convert to lowercase
     text = lower(text);
     % Remove punctuation
-    text = regexprep(text, '[^\w\s]', ''); % Looked up how to remove punctation
+    text = regexprep(text, '[^\w\s]', ''); % Looked up how to remove punctation correctly! 
     % Tokenize words
     words = split(text); % Split huge text into individual words 
 
     % Initialize word count storage (creating list with 0s of length of
-    % number of words there are - both pos and neg)
+    % number of words there are - both positive and negative)
     posWordCount = zeros(1, length(positiveWords));
     negWordCount = zeros(1, length(negativeWords));
 
@@ -82,14 +83,14 @@ for i = 1:length(pdfFiles)
         i, categories{articleTones(i) + 2}, posTotal, negTotal);
 end
 
-% Step 3: Check if any articles were processed
+%% Step 3: Check if any articles were processed
 if all(isnan(articleTones))
     warning('No articles were successfully processed.');
 else
     fprintf('Successfully processed %d articles.\n', sum(~isnan(articleTones)));
 end
 
-%% Step 4: Load Manual Word Count Data
+%% Step 4: Load Manual Word Count Data 
 manualData = readtable('ITP Project 1 word table.xlsx', 'VariableNamingRule', 'preserve');
 
 % Extract manual word counts
@@ -112,7 +113,7 @@ for i = 1:length(manualPosTotals)
     end
 end
 
-%% Step 5: Compare Manual vs. Coded Word Counts
+%% Step 5: Compare Manual vs. Coded Word Counts 
 figure; % Ensure a new figure window opens
 
 % Extract total word counts for manual annotations
